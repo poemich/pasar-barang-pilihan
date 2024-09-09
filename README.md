@@ -1,6 +1,6 @@
 # Pasar Barang Pilihan
 
-**WEBSITE**: <to be announced>
+**WEBSITE**: <http://muhammad-fadhlan31-pasarbarangpilihan.pbp.cs.ui.ac.id/>
 
 ---
 
@@ -116,17 +116,20 @@
 
 ### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 
-1. Client Request: Klien mengirimkan request (misalnya, HTTP GET atau POST) ke aplikasi Django.
+![Django MVT Diagram](diagram.png)
 
-2. urls.py: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
+1. **Client Request**: Klien mengirimkan request (misalnya, HTTP GET atau POST) ke aplikasi Django.
 
-3. views.py: Di sini, views.py bertanggung jawab untuk memproses request dan menentukan data apa yang perlu dikirimkan ke template atau model. Jika perlu mengakses data dari database, view akan memanggil model.
+2. **urls.py**: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
 
-4. models.py: Jika view memerlukan data dari database, ia akan berinteraksi dengan models.py. Django ORM digunakan untuk mengambil, menyimpan, atau memperbarui data di database.
+3. **views.py**: Di sini, views.py bertanggung jawab untuk memproses request dan menentukan data apa yang perlu dikirimkan ke template atau model. Jika perlu mengakses data dari database, view akan memanggil model.
 
-5. HTML Template: Setelah data dikumpulkan dari model, view mengirimkan data tersebut ke HTML template untuk dirender menjadi halaman web yang akan dikembalikan ke klien.
+4. **models.py**: Jika view memerlukan data dari database, ia akan berinteraksi dengan models.py. Django ORM digunakan untuk mengambil, menyimpan, atau memperbarui data di database.
 
-6. Client Response: Django merespon request klien dengan mengirimkan kembali halaman HTML yang sudah dirender.
+5. **HTML Template**: Setelah data dikumpulkan dari model, view mengirimkan data tersebut ke HTML template untuk dirender menjadi halaman web yang akan dikembalikan ke klien.
+
+6. **Client Response**: Django merespon request klien dengan mengirimkan kembali halaman HTML yang sudah dirender.
+
 
 ### 3. Jelaskan fungsi git dalam pengembangan perangkat lunak!
 
