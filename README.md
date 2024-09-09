@@ -119,9 +119,6 @@
 ![Django MVT Diagram](diagram.png)
 
 1. **Client Request**: Klien mengirimkan request (misalnya, HTTP GET atau POST) ke aplikasi Django.
-![Django MVT Diagram](image.png)
-
-1. **Client Request**: Klien mengirimkan request (misalnya, HTTP GET atau POST) ke aplikasi Django.
 
 2. **urls.py**: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
 2. **urls.py**: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
