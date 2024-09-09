@@ -119,14 +119,23 @@
 ![Django MVT Diagram](diagram.png)
 
 1. **Client Request**: Klien mengirimkan request (misalnya, HTTP GET atau POST) ke aplikasi Django.
+![Django MVT Diagram](image.png)
 
+1. **Client Request**: Klien mengirimkan request (misalnya, HTTP GET atau POST) ke aplikasi Django.
+
+2. **urls.py**: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
 2. **urls.py**: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
 
 3. **views.py**: Di sini, views.py bertanggung jawab untuk memproses request dan menentukan data apa yang perlu dikirimkan ke template atau model. Jika perlu mengakses data dari database, view akan memanggil model.
+3. **views.py**: Di sini, views.py bertanggung jawab untuk memproses request dan menentukan data apa yang perlu dikirimkan ke template atau model. Jika perlu mengakses data dari database, view akan memanggil model.
 
+4. **models.py**: Jika view memerlukan data dari database, ia akan berinteraksi dengan models.py. Django ORM digunakan untuk mengambil, menyimpan, atau memperbarui data di database.
 4. **models.py**: Jika view memerlukan data dari database, ia akan berinteraksi dengan models.py. Django ORM digunakan untuk mengambil, menyimpan, atau memperbarui data di database.
 
 5. **HTML Template**: Setelah data dikumpulkan dari model, view mengirimkan data tersebut ke HTML template untuk dirender menjadi halaman web yang akan dikembalikan ke klien.
+5. **HTML Template**: Setelah data dikumpulkan dari model, view mengirimkan data tersebut ke HTML template untuk dirender menjadi halaman web yang akan dikembalikan ke klien.
+
+6. **Client Response**: Django merespon request klien dengan mengirimkan kembali halaman HTML yang sudah dirender.
 
 6. **Client Response**: Django merespon request klien dengan mengirimkan kembali halaman HTML yang sudah dirender.
 
