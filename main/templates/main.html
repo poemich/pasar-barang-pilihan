@@ -1,6 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
 <h1>Pasar Barang Pilihan</h1>
 
 <h5>Name: </h5>
 <p>{{ name }}<p>
 <h5>Class: </h5>
 <p>{{ class }}<p>
+
+{% if not product_entries %}
+<p>Belum ada data product pada pasar barang pilihan.</p>
+{% else %}
+<table>
+    <tr>
+    <th>Product Name</th>
+    <th>Time</th>
+    <th>Description</th>
+    <th>Price</th>
+    </tr>
+
+    {% for product_entry in product_entries %}
+    <tr>
+    <td>{{product_entry.name}}</td>
+    <td>{{product_entry.time}}</td>
+    <td>{{product_entry.description}}</td>
+    <td>{{product_entry.price}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:create_product_entry' %}">
+    <button>Add New Product Entry</button>
+</a>
+{% endblock content %}

@@ -1,154 +1,70 @@
 # Pasar Barang Pilihan
 
+## TUGAS 3
+
 **WEBSITE**: <http://muhammad-fadhlan31-pasarbarangpilihan.pbp.cs.ui.ac.id/>
 
 ---
 
 ## Pertanyaan
 
-### 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step
+### 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 
-1. Dimulai dari membuat proyek Django baru
+Data delivery diperlukan untuk mengirimkan dan menerima data antara berbagai komponen atau lapisan dalam sebuah platform. Ini memungkinkan komunikasi antara frontend dan backend, pertukaran informasi antar sistem, serta interoperabilitas antara berbagai perangkat dan platform. Dengan data delivery, platform dapat berfungsi secara dinamis, mentransfer data dalam format yang terstruktur seperti JSON dan XML, sehingga memastikan aplikasi dapat dijalankan di berbagai lingkungan dengan lancar dan aman​.
 
-    - Membuat folder baru untuk proyek ini dan mengaktifkan virtual environment agar proyek terisolasi dari sistem utama. Perintah yang dijalankan adalah:
-    
-            python -m venv venv
+### 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
 
-    - Setelah virtual environment dibuat, saya mengaktifkannya dengan:
+Secara umum, JSON lebih baik dibandingkan XML untuk pengiriman data dalam aplikasi modern, terutama aplikasi berbasis web. JSON lebih ringan, lebih mudah dibaca oleh manusia, dan memiliki sintaks yang lebih sederhana dibandingkan XML. JSON juga lebih terintegrasi dengan JavaScript, bahasa yang banyak digunakan di web development. Selain itu, parsing JSON lebih cepat dibandingkan XML, menjadikannya pilihan yang lebih efisien untuk komunikasi antar sistem.
 
-            venv\Scripts\activate
+### 3. Jelaskan fungsi dari method `is_valid()` pada form Django dan mengapa kita membutuhkan method tersebut?
 
-    
-    - Menyiapkan keperluan proyek baru: menambah .ignore, menginstall requirements.txt
-    
-    - Menjalankan command
+Method `is_valid` pada form Django digunakan untuk memeriksa apakah data yang dimasukkan ke dalam form memenuhi validasi yang telah didefinisikan pada model atau form. Jika valid, method ini mengembalikan nilai `True`, yang berarti data tersebut sesuai dan bisa diproses lebih lanjut, seperti disimpan ke database. Sebaliknya, jika data tidak valid, method ini mengembalikan `False`, dan Django akan menyediakan pesan error untuk menunjukkan kesalahan yang perlu diperbaiki.
 
-            django-admin startproject pasar_barang_pilihan .
+Pada kode, method `is_valid` digunakan pada fungsi `create_product_entry` untuk memvalidasi input form yang bertujuan menambahkan produk baru. Hanya jika data valid dan request adalah POST, produk baru akan disimpan ke database
 
-    - Menyiapkan .gitignore dan menginstall Django
+```py
+def create_product_entry(request):
+    form = ProductEntryForm(request.POST or None)
 
-            pip install django
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_main')
+```
 
-    - Membuat proyek baru bernama pasar_barang_pilihan dengan menggunakan perintah berikut:
+Dibutuhkan `is_valid` untuk mencegah data yang tidak sesuai atau tidak lengkap masuk ke dalam database, menjaga konsistensi dan integritas data. Misalnya, jika pengguna tidak memasukkan harga produk, validasi akan gagal, dan form tidak akan diproses lebih lanjut sampai data yang benar diisi.
 
-            django-admin startproject pasar_barang_pilihan .
+### 4. Mengapa kita membutuhkan `csrf_token` saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan `csrf_token` pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
 
-2. Membuat Aplikasi Bernama main
+`csrf_token` di Django berfungsi untuk melindungi aplikasi dari Cross-Site Request Forgery (CSRF), yaitu serangan di mana penyerang mencoba melakukan permintaan (request) yang tidak sah dari pengguna tanpa sepengetahuan mereka.
 
-    - Membuat aplikasi main yang akan menangani fungsi utama e-commerce dengan perintah:
+Dalam form fungsi create_product_entry, ditambahkan `csrf_token` untuk memastikan bahwa permintaan POST yang dilakukan untuk menambah produk hanya bisa terjadi dari halaman web yang sah, yaitu yang berhubungan dengan aplikasi Django. Ini mencegah serangan yang memanfaatkan pengguna yang sudah logged in untuk melakukan aksi seperti menambah data tanpa persetujuan pengguna.
 
-            python manage.py startapp main
+Jika tidak menambahkan `csrf_token` pada form, penyerang bisa membuat halaman web berbahaya yang mengirimkan request ke aplikasi menggunakan pengguna yang logged in, memungkinkan mereka untuk memanipulasi data atau melakukan tindakan lain tanpa izin.
 
-    - Menambahkan main ke dalam INSTALLED_APPS pada file settings.py:
+Pada file `create_product_entry.html', `csrf_token` digunakan sebagai berikut:
 
-            INSTALLED_APPS = [
-                ...
-                'main',
-            ]
-
-3. Membuat Model Product 
-
-    - Membuat class Product di dalam file models.py yang memiliki tiga atribut yaitu name, price, dan description. Berikut kode model yang saya buat:
-
-            from django.db import models
-
-            class Product(models.Model):
-                class Product(models.Model):
-                    name = models.CharField(max_length=100)
-                    price = models.IntegerField()
-                    description = models.TextField()
-
-    - Migrasi Database untuk membuat tabel Product
-
-            python manage.py makemigrations
-            python manage.py migrate
-    
-4. Membuat Template HTML
-    - Membuat template main.html di dalam direktori templates di dalam folder main
-    
-            <h1>Pasar Barang Pilihan</h1>
-
-            <h5>Name: </h5>
-            <p>{{ name }}<p>
-            <h5>Class: </h5>
-            <p>{{ class }}<p>
-
-5. Membuat Fungsi View
-
-    - Menambahkan fungsi show_main di dalam views.py, Fungsi ini mengembalikan template main.html ketika URL root diakses. Berikut kodenya:
-
-            from django.shortcuts import render
-
-            def show_main(request):
-                context = {
-                    'name': 'Muhammad Fadhlan Karimuddin',
-                    'class': 'PBP F'
-                }
-            return render(request, "main.html", context)
-
-6. Routing URL untuk Aplikasi main
-
-    - Membuat file urls.py di dalam folder main untuk mengatur routing URL di dalam aplikasi main:
-
-            from django.urls import path
-            from main.views import show_main
-
-            app_name = 'main'
-
-            urlpatterns = [
-                path('', show_main, name='main')
-            ]
-
-    - Menghubungkan urls.py aplikasi ke proyek
-    - Mengedit file urls.py di dalam proyek utama untuk menghubungkan routing dari aplikasi main:
-
-            from django.contrib import admin
-            from django.urls import path, include
-
-            urlpatterns = [
-                path('admin/', admin.site.urls),
-                path('', include('main.urls')),
-            ]
-
-7. Deployment ke PWS
-
-    - Deployment ke PWS dengan push ke REPO PWS
-
-### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
-
-![Django MVT Diagram](diagram.png)
-
-1. **Client Request**: Klien mengirimkan request (misalnya, HTTP GET atau POST) ke aplikasi Django.
-
-2. **urls.py**: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
-2. **urls.py**: Django memeriksa file urls.py untuk mencocokkan URL request klien dengan pola yang telah didefinisikan. Jika cocok, URL tersebut akan diteruskan ke view yang sesuai.
-
-3. **views.py**: Di sini, views.py bertanggung jawab untuk memproses request dan menentukan data apa yang perlu dikirimkan ke template atau model. Jika perlu mengakses data dari database, view akan memanggil model.
-3. **views.py**: Di sini, views.py bertanggung jawab untuk memproses request dan menentukan data apa yang perlu dikirimkan ke template atau model. Jika perlu mengakses data dari database, view akan memanggil model.
-
-4. **models.py**: Jika view memerlukan data dari database, ia akan berinteraksi dengan models.py. Django ORM digunakan untuk mengambil, menyimpan, atau memperbarui data di database.
-4. **models.py**: Jika view memerlukan data dari database, ia akan berinteraksi dengan models.py. Django ORM digunakan untuk mengambil, menyimpan, atau memperbarui data di database.
-
-5. **HTML Template**: Setelah data dikumpulkan dari model, view mengirimkan data tersebut ke HTML template untuk dirender menjadi halaman web yang akan dikembalikan ke klien.
-5. **HTML Template**: Setelah data dikumpulkan dari model, view mengirimkan data tersebut ke HTML template untuk dirender menjadi halaman web yang akan dikembalikan ke klien.
-
-6. **Client Response**: Django merespon request klien dengan mengirimkan kembali halaman HTML yang sudah dirender.
-
-6. **Client Response**: Django merespon request klien dengan mengirimkan kembali halaman HTML yang sudah dirender.
+```html
+...
+<form method="POST">
+  {% csrf_token %}
+  ...
+</form>
+...
+```
 
 
-### 3. Jelaskan fungsi git dalam pengembangan perangkat lunak!
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
+- ***Membuat Input Form untuk Menambahkan Produk:*** Saya mulai dengan membuat form di `forms.py` menggunakan `ModelForm` untuk menerima data produk baru. Form ini terdiri dari field `name`, `price`, dan `description` yang sudah didefinisikan di model `Product` di `models.py`.
 
-Git adalah sistem kontrol versi yang berfungsi untuk melacak perubahan kode dalam pengembangan perangkat lunak. Git memudahkan pengembang mengelola versi kode, memungkinkan kolaborasi tim melalui fitur branching dan merging, serta menyimpan riwayat perubahan secara terstruktur. Selain itu, Git membantu dalam revert atau mengembalikan perubahan jika terjadi kesalahan, menjaga integritas proyek. GitHub melengkapi Git sebagai platform kolaborasi berbasis web, memungkinkan tim untuk bekerja sama, berbagi kode, dan menjaga backup proyek secara aman. Kombinasi Git dan GitHub membuat pengembangan perangkat lunak lebih terstruktur, aman, dan efisien.
+- ***Menambah Views untuk Menampilkan Data dalam Format XML dan JSON:*** Setelah itu, saya membuat views di `views.py` untuk menampilkan data produk dalam format XML dan JSON. Menggunakan `serializers` dari Django, saya menampilkan semua data produk menggunakan fungsi `show_xml` dan `show_json`. Saya juga membuat views tambahan untuk menampilkan data berdasarkan ID, seperti `show_xml_by_id` dan `show_json_by_id`.
 
+- ***Routing URL:*** Kemudian, saya menambahkan path URL di `urls.py` untuk setiap view yang saya buat, termasuk endpoint untuk menampilkan data produk dalam format XML dan JSON, baik secara keseluruhan maupun berdasarkan ID.
 
-### 4. Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
+- ***Pengujian dengan Postman:*** Setelah semuanya selesai, saya melakukan pengujian untuk memastikan semua fungsi berjalan dengan baik, menggunakan Postman untuk mengakses URL yang menampilkan data produk dalam format XML dan JSON, baik semua data maupun berdasarkan ID.
 
-Django dijadikan permulaan dalam pembelajaran pengembangan perangkat lunak karena memiliki struktur Model-View-Template (MVT) yang jelas, fitur-fitur bawaan yang lengkap (batteries included), dan dokumentasi yang sangat baik, sehingga memudahkan pemula untuk memahami konsep dasar pengembangan web. Selain itu, Django memiliki komunitas yang kuat dan fitur keamanan yang terintegrasi, sehingga pengembang baru bisa belajar secara mandiri dengan dukungan komunitas serta memahami pentingnya keamanan dalam pengembangan aplikasi sejak awal.
-
-### 5. Mengapa model pada Django disebut sebagai ORM?
-
-Model pada Django disebut sebagai ORM (Object-Relational Mapping) karena Django menggunakan pendekatan ini untuk memetakan objek dalam kode Python ke tabel dalam basis data relasional. ORM memungkinkan pengembang untuk bekerja dengan data dalam bentuk objek Python.
-
-Dengan Django ORM, setiap class di dalam model mewakili tabel dalam basis data, dan setiap atribut dari class tersebut menjadi kolom pada tabel. Ini memungkinkan pengembang untuk berinteraksi dengan data (seperti membuat, membaca, memperbarui, atau menghapus) melalui metode Python tanpa harus menulis SQL secara langsung, sehingga mempermudah pengelolaan data dan meningkatkan produktivitas.
+### Screenshot Postman
+![xml](assignment_answers/tugas3/xml.png)
+![json](assignment_answers/tugas3/json.png)
+![xmlid](assignment_answers/tugas3/xmlid.png)
+![jsonid](assignment_answers/tugas3/jsonid.png)
