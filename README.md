@@ -82,3 +82,7 @@ Dengan pengaturan yang tepat, penggunaan cookies dapat dijadikan aman, namun tet
 
 ### 5. Menyimpan Perubahan di GitHub:
    - Setelah selesai mengimplementasikan semua fitur, saya menggunakan perintah `git add`, `git commit`, dan `git push` untuk menyimpan dan mengunggah kode ke repositori GitHub.
+
+---
+Screenshot User & Data
+![user_and_data](assignment_answers/tugas4/useranddata.png)
