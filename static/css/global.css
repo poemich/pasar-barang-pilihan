@@ -13,8 +13,3 @@
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
 }
-.animate-shine {
-    background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.3));
-    background-size: 200% 100%;
-    animation: shine 3s infinite;
-}
