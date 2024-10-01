@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% include 'navbar.html' %}
 <h1>Pasar Barang Pilihan</h1>
 
 <h5>Name: </h5>
@@ -12,18 +13,32 @@
 {% else %}
 <table>
     <tr>
-    <th>Product Name</th>
-    <th>Time</th>
-    <th>Description</th>
-    <th>Price</th>
+        <th>Product Name</th>
+        <th>Time</th>
+        <th>Description</th>
+        <th>Price</th>
     </tr>
 
     {% for product_entry in product_entries %}
     <tr>
-    <td>{{product_entry.name}}</td>
-    <td>{{product_entry.time}}</td>
-    <td>{{product_entry.description}}</td>
-    <td>{{product_entry.price}}</td>
+        <td>{{product_entry.name}}</td>
+        <td>{{product_entry.time}}</td>
+        <td>{{product_entry.description}}</td>
+        <td>{{product_entry.price}}</td>
+        <td>
+            <a href="{% url 'main:edit_product' product_entry.pk %}">
+                <button>
+                    Edit
+                </button>
+            </a>
+        </td>
+        <td>
+            <a href="{% url 'main:delete_product' product_entry.pk %}">
+                <button>
+                    Delete
+                </button>
+            </a>
+        </td>
     </tr>
     {% endfor %}
 </table>
